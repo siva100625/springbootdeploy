@@ -9,14 +9,13 @@ public class CorsConfig implements WebMvcConfigurer {
 
     @Override
     public void addCorsMappings(CorsRegistry registry) {
-        registry.addMapping("/**") // allow all endpoints, not just "/"
-                .allowedOrigins(
-                        "https://employeemanagement-uo32.onrender.com",
-                        "http://localhost:5173"
+        registry.addMapping("/**")
+                .allowedOriginPatterns(
+                        "http://localhost:5173",
+                        "https://employeemanagement-uo32.onrender.com"
                 )
                 .allowedMethods("GET", "POST", "PUT", "DELETE", "OPTIONS")
                 .allowedHeaders("*")
                 .allowCredentials(true);
     }
-
 }
