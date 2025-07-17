@@ -3,11 +3,13 @@ package com.example.springbootfirst.controllers;
 
 import com.example.springbootfirst.models.RegisterDetails;
 import com.example.springbootfirst.models.UserDetailsDto;
+import com.example.springbootfirst.models.Task;
 import com.example.springbootfirst.services.EmployeeService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 
+import java.time.LocalDate;
 import java.util.List;
 
 @RestController
@@ -38,6 +40,12 @@ public class EmployeeController {
     }
 
 
+    @GetMapping("/employee/search/{name}")
+    @PreAuthorize("hasAnyRole('ADMIN','USER')")
+    public List<RegisterDetails> searchEmployees(@PathVariable String name) {
+        return employeeService.searchEmployeesByName(name);
+    }
+
 
 //    @PreAuthorize("hasAnyRole('ADMIN','USER')")
 //    @GetMapping("/employee/job/{job}")
@@ -62,5 +70,17 @@ public class EmployeeController {
     @DeleteMapping("/employee/{empID}")
     public String deleteMethod(@PathVariable int empID){
         return employeeService.deleteEmployeeById(empID);
+    }
+
+    @GetMapping("/employee/{empId}/tasks")
+    @PreAuthorize("hasAnyRole('ADMIN','USER')")
+    public List<Task> getTasksForEmployee(@PathVariable int empId) {
+        return employeeService.getTasksForEmployee(empId);
+    }
+
+    @PostMapping("/employee/{empId}/tasks")
+    @PreAuthorize("hasRole('ADMIN')")
+    public String addTaskToEmployee(@PathVariable int empId, @RequestBody Task task) {
+        return employeeService.addTaskToEmployee(empId, task.getTitle(), task.getDescription(), task.getDueDate());
     }
 }

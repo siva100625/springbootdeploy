@@ -3,12 +3,15 @@ package com.example.springbootfirst.services;
 import com.example.springbootfirst.models.RegisterDetails;
 import com.example.springbootfirst.models.Roles;
 import com.example.springbootfirst.models.UserDetailsDto;
+import com.example.springbootfirst.models.Task;
 import com.example.springbootfirst.repository.RegisterDetailsRepository;
 import com.example.springbootfirst.repository.RolesRepository;
+import com.example.springbootfirst.repository.TaskRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
+import java.time.LocalDate;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
@@ -23,6 +26,9 @@ public class EmployeeService {
 
     @Autowired
     RolesRepository rolesRepository;
+
+    @Autowired
+    TaskRepository taskRepository;
 
     public List<RegisterDetails> getMethod() {
         return registerDetailsRepository.findAll();
@@ -81,5 +87,25 @@ public class EmployeeService {
         System.out.println("Registration"+ registerDetails);
         registerDetailsRepository.save(registerDetails);
         return "Employee Added Successfully";
+    }
+
+    public List<RegisterDetails> searchEmployeesByName(String name) {
+        return registerDetailsRepository.findByNameContainingIgnoreCase(name);
+    }
+
+    public List<Task> getTasksForEmployee(int empId) {
+        return taskRepository.findByEmployeeEmpId(empId);
+    }
+
+    public String addTaskToEmployee(int empId, String title, String description, LocalDate dueDate) {
+        RegisterDetails employee = registerDetailsRepository.findById(empId)
+                .orElseThrow(() -> new RuntimeException("No Such User Present"));
+        Task task = new Task();
+        task.setTitle(title);
+        task.setDescription(description);
+        task.setDueDate(dueDate);
+        task.setEmployee(employee);
+        taskRepository.save(task);
+        return "Task Added Successfully";
     }
 }
