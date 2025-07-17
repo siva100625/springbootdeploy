@@ -5,27 +5,78 @@ import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
-import java.util.Date;
+import java.util.Set;
 
-@Data // Generates getters, setters, toString, equals, hashCode
-@AllArgsConstructor // Generates constructor with all fields
-@NoArgsConstructor // Generates constructor with no filed
+@Data
+@NoArgsConstructor
+@AllArgsConstructor
 @Entity
 @Table(name="user_details")
 public class RegisterDetails {
-    @Id // primary key
-    @GeneratedValue(strategy = GenerationType.IDENTITY) //- if you give this you should not give this field in input this will be auto generated
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private int empId;
-
-    //    nullable = false -> not null
-    @Column(name="emp_name")
+    @Column(nullable = false)
     private String name;
+    @Column(nullable = false, unique = true)
     private String email;
+    @Column(nullable = false)
     private String password;
-    private String gender;
+    @Column(name = "user_name", nullable = false, unique = true)
+    private String userName;
+    @ManyToMany(fetch = FetchType.EAGER)
+    @JoinTable(name = "user_roles",joinColumns =
+    @JoinColumn(name = "user_id", referencedColumnName = "empId"),
+            inverseJoinColumns = @JoinColumn(name = "role_id", referencedColumnName = "roleId")
+    )
+    private Set<Roles> roles;
 
-    @Column(name="date_of_birth")
-    private Date dateOfBirth;
 
-    private String role;
+    public int getEmpId() {
+        return empId;
+    }
+
+    public void setEmpId(int empId) {
+        this.empId = empId;
+    }
+
+    public String getName() {
+        return name;
+    }
+
+    public void setName(String name) {
+        this.name = name;
+    }
+
+    public String getEmail() {
+        return email;
+    }
+
+    public void setEmail(String email) {
+        this.email = email;
+    }
+
+    public String getPassword() {
+        return password;
+    }
+
+    public void setPassword(String password) {
+        this.password = password;
+    }
+
+    public String getUserName() {
+        return userName;
+    }
+
+    public void setUserName(String userName) {
+        this.userName = userName;
+    }
+
+    public Set<Roles> getRoles() {
+        return roles;
+    }
+
+    public void setRoles(Set<Roles> roles) {
+        this.roles = roles;
+    }
 }
