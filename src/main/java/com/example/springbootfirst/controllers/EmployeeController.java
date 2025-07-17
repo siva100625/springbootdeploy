@@ -54,8 +54,8 @@ public class EmployeeController {
 
     @PreAuthorize("hasRole('ADMIN')")
     @PutMapping("/employee/{empId}")
-    public String putMethod(@PathVariable int empId){
-        return employeeService.updateEmployee(empId);
+    public String putMethod(@PathVariable int empId, @RequestBody UserDetailsDto updatedData) {
+        return employeeService.updateEmployee(empId, updatedData);
     }
 
     @PreAuthorize("hasRole('ADMIN')")
