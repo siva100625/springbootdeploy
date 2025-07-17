@@ -72,8 +72,8 @@ class EmployeeServiceTest {
         RegisterDetails emp = new RegisterDetails();
         emp.setEmpId(10);
         when(registerDetailsRepository.findById(10)).thenReturn(Optional.of(emp));
-
-        String result = employeeService.updateEmployee(10);
+        UserDetailsDto dummyDto = new UserDetailsDto();
+        String result = employeeService.updateEmployee(10,dummyDto);
 
         assertEquals("Employee Updated Successfully", result);
         verify(registerDetailsRepository, times(1)).save(emp);
@@ -84,7 +84,8 @@ class EmployeeServiceTest {
         when(registerDetailsRepository.findById(999)).thenReturn(Optional.empty());
 
         Exception exception = assertThrows(RuntimeException.class, () -> {
-            employeeService.updateEmployee(999);
+            UserDetailsDto dummyDto = new UserDetailsDto();
+            employeeService.updateEmployee(999,dummyDto);
         });
 
         assertTrue(exception.getMessage().contains("No Such User Present"));

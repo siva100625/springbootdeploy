@@ -74,12 +74,13 @@ class EmployeeControllerTest {
     void testPutMethod(){
         int empId = 1;
         String expected = "Employee updated successfully";
-        when(employeeService.updateEmployee(empId)).thenReturn(expected);
+        UserDetailsDto dummyDto = new UserDetailsDto();
+        when(employeeService.updateEmployee(empId,dummyDto)).thenReturn(expected);
 
-        String result = employeeController.putMethod(empId);
+        String result = employeeController.putMethod(empId,dummyDto);
 
         assertEquals(expected, result);
-        verify(employeeService, times(1)).updateEmployee(empId);
+        verify(employeeService, times(1)).updateEmployee(empId,dummyDto);
     }
 
     @Test
