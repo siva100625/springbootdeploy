@@ -1,6 +1,6 @@
 package com.example.springbootfirst.config;
 
-import com.example.springbootfirst.jwt.JwtAuthenticationFilter;
+import com.example.springbootfirst.jwtit .JwtAuthenticationFilter;
 import com.example.springbootfirst.services.CustomUserDetailsService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
@@ -35,6 +35,8 @@ public class SpringConfiguration {
     @Bean
     SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
         http
+                .cors() // Enable CORS support in the security filter chain
+                .and()
                 .csrf((csrf)->csrf.disable())
                 .authorizeHttpRequests(auth-> {
                     auth.requestMatchers("/api/auth/**").permitAll();
@@ -50,19 +52,6 @@ public class SpringConfiguration {
             throws Exception {
         return configuration.getAuthenticationManager();
 
-    }
-
-    @Bean
-    public WebMvcConfigurer corsConfigurer() {
-        return new WebMvcConfigurer() {
-            @Override
-            public void addCorsMappings(CorsRegistry registry) {
-                registry.addMapping("/**")
-                        .allowedOrigins("http://localhost:3000") // Change to your frontend URL if needed
-                        .allowedMethods("GET", "POST", "PUT", "DELETE", "OPTIONS")
-                        .allowCredentials(true);
-            }
-        };
     }
 
 }
