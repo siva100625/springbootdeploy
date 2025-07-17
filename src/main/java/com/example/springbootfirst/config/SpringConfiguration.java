@@ -1,6 +1,6 @@
 package com.example.springbootfirst.config;
 
-import com.example.springbootfirst.jwtit .JwtAuthenticationFilter;
+import com.example.springbootfirst.jwt.JwtAuthenticationFilter;
 import com.example.springbootfirst.services.CustomUserDetailsService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
